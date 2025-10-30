@@ -72,6 +72,9 @@ public interface DishMapper {
     }
 
     default Set<String> fromFoodTags(Set<FoodTag> tags) {
+        if (tags == null) {
+            return new HashSet<>();
+        }
         return tags.stream()
                 .map(Enum::name)
                 .collect(Collectors.toSet());

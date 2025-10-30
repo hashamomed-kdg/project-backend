@@ -4,10 +4,9 @@ import DishCard from './DishCard';
 interface DishListProps {
     dishes: Dish[];
     onEdit: (dish: Dish) => void;
-    onToggleState: (dish: Dish) => void;
 }
 
-export default function DishList({ dishes, onEdit, onToggleState }: DishListProps) {
+export default function DishList({ dishes, onEdit }: DishListProps) {
     if (dishes.length === 0) {
         return <div className="no-dishes">No dishes found. Try adjusting your filters or create a new dish!</div>;
     }
@@ -19,7 +18,6 @@ export default function DishList({ dishes, onEdit, onToggleState }: DishListProp
                     key={dish.dishId}
                     dish={dish}
                     onEdit={() => onEdit(dish)}
-                    onToggleState={() => onToggleState(dish)}
                 />
             ))}
         </div>

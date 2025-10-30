@@ -1,4 +1,4 @@
-import { Dish, CreateDishRequest, EditDishRequest, DishState } from '../types/types';
+import { Dish, CreateDishRequest, DishState } from '../types/types';
 
 const API_BASE_URL = '/api';
 

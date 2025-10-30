@@ -188,4 +188,11 @@ Content-Type: application/json
 }
 
 ###
+# get dishes by restaurant id
+GET http://localhost:8080/api/restaurants/550e8400-e29b-41d4-a716-446655440000/dishes
+Accept: application/json
+
+###
+
+
 

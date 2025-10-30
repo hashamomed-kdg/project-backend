@@ -3,18 +3,21 @@ import { Dish } from '../types/types';
 interface DishCardProps {
     dish: Dish;
     onEdit: () => void;
-    onToggleState: () => void;
 }
 
-export default function DishCard({ dish, onEdit, onToggleState }: DishCardProps) {
+export default function DishCard({ dish, onEdit }: DishCardProps) {
+    const tags = dish.foodTags || [];
+    const isDraft = dish.state === 'DRAFT';
+    const hasParent = dish.parentId != null;
+
     return (
         <div className={`dish-card ${dish.state.toLowerCase()}`}>
             <div className="dish-image">
-                <img src={dish.pictureUrl} alt={dish.name} onError={(e) => {
+                <img src={dish.pictureUrl || 'https://via.placeholder.com/300x200?text=No+Image'} alt={dish.name} onError={(e) => {
                     e.currentTarget.src = 'https://via.placeholder.com/300x200?text=No+Image';
                 }} />
                 <span className={`badge badge-${dish.state.toLowerCase()}`}>
-          {dish.state}
+          {isDraft ? 'DRAFT' : 'PUBLISHED'}
         </span>
             </div>
 
@@ -24,10 +27,14 @@ export default function DishCard({ dish, onEdit, onToggleState }: DishCardProps)
                     <span className="dish-type">{dish.dishType}</span>
                 </div>
 
+                {isDraft && hasParent && (
+                    <p className="draft-info">📝 Draft with unpublished changes</p>
+                )}
+
                 <p className="dish-description">{dish.description}</p>
 
                 <div className="dish-tags">
-                    {dish.tags.map(tag => (
+                    {tags.map(tag => (
                         <span key={tag} className="tag">{tag.replace('_', ' ')}</span>
                     ))}
                 </div>
@@ -37,9 +44,6 @@ export default function DishCard({ dish, onEdit, onToggleState }: DishCardProps)
                     <div className="dish-actions">
                         <button className="btn-icon" onClick={onEdit} title="Edit">
                             ✏️
-                        </button>
-                        <button className="btn-icon" onClick={onToggleState} title={`Set to ${dish.state === 'PUBLISHED' ? 'Draft' : 'Published'}`}>
-                            {dish.state === 'PUBLISHED' ? '📝' : '✅'}
                         </button>
                     </div>
                 </div>

@@ -6,6 +6,7 @@ import be.kdg.programming6.project.restaurantmanagement.adapter.RestaurantMapper
 import be.kdg.programming6.project.restaurantmanagement.adapter.in.request.*;
 import be.kdg.programming6.project.restaurantmanagement.adapter.in.response.DishDto;
 import be.kdg.programming6.project.restaurantmanagement.adapter.in.response.RestaurantDto;
+import be.kdg.programming6.project.restaurantmanagement.core.FindDishesUseCaseImpl;
 import be.kdg.programming6.project.restaurantmanagement.domain.Dish;
 import be.kdg.programming6.project.restaurantmanagement.domain.Restaurant;
 import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.DishState;
@@ -14,7 +15,9 @@ import be.kdg.programming6.project.restaurantmanagement.port.in.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/restaurants")
@@ -32,8 +35,9 @@ public class RestaurantController {
     private final ChangeRestaurantStatusUseCase changeRestaurantStatusUseCase;
     private final DecideOrderUseCase decideOrderUseCase;
     private final MarkOrderReadyUseCase markOrderReadyUseCase;
+    private final FindDishesUseCaseImpl findDishesUseCase;
 
-    public RestaurantController(RestaurantMapper mapper, DishMapper dishMapper, CreateRestaurantUseCase createRestaurantUseCase, EditDishUseCase editDishUseCase, ChangeStateDishUseCase changeStateDishUseCase, CreateDishUseCase createDishUseCase, ApplyAllDraftsUseCase applyAllDraftsUseCase, ScheduleDraftsUseCase scheduleDraftsUseCase, ChangeOpeningHoursUseCase changeOpeningHoursUseCase, ChangeRestaurantStatusUseCase changeRestaurantStatusUseCase, DecideOrderUseCase decideOrderUseCase, MarkOrderReadyUseCase markOrderReadyUseCase) {
+    public RestaurantController(RestaurantMapper mapper, DishMapper dishMapper, CreateRestaurantUseCase createRestaurantUseCase, EditDishUseCase editDishUseCase, ChangeStateDishUseCase changeStateDishUseCase, CreateDishUseCase createDishUseCase, ApplyAllDraftsUseCase applyAllDraftsUseCase, ScheduleDraftsUseCase scheduleDraftsUseCase, ChangeOpeningHoursUseCase changeOpeningHoursUseCase, ChangeRestaurantStatusUseCase changeRestaurantStatusUseCase, DecideOrderUseCase decideOrderUseCase, MarkOrderReadyUseCase markOrderReadyUseCase, FindDishesUseCaseImpl findDishesUseCase) {
         this.mapper = mapper;
         this.dishMapper = dishMapper;
         this.createRestaurantUseCase = createRestaurantUseCase;
@@ -46,6 +50,18 @@ public class RestaurantController {
         this.changeRestaurantStatusUseCase = changeRestaurantStatusUseCase;
         this.decideOrderUseCase = decideOrderUseCase;
         this.markOrderReadyUseCase = markOrderReadyUseCase;
+        this.findDishesUseCase = findDishesUseCase;
+    }
+
+    @GetMapping("/{restaurantId}/dishes")
+    public ResponseEntity<List<DishDto>> getDishes(@PathVariable UUID restaurantId) {
+        FindAllDishesByRestaurantCommand command = new FindAllDishesByRestaurantCommand(RestaurantId.of(restaurantId));
+        List<Dish> dishes = findDishesUseCase.findAllDishesByRestaurant(command);
+
+        return ResponseEntity.ok(dishes.stream()
+                .map(dishMapper::toDto)
+                .collect(Collectors.toList()));
+
     }
 
     @PostMapping()

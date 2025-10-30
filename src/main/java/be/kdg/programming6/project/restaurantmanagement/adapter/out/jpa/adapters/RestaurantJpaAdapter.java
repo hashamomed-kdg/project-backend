@@ -4,6 +4,7 @@ import be.kdg.programming6.project.restaurantmanagement.adapter.RestaurantMapper
 import be.kdg.programming6.project.restaurantmanagement.adapter.out.jpa.entity.RestaurantJpaEntity;
 import be.kdg.programming6.project.restaurantmanagement.adapter.out.jpa.repository.RestaurantJpaRepository;
 import be.kdg.programming6.project.restaurantmanagement.domain.Restaurant;
+import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.OwnerId;
 import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.RestaurantId;
 import be.kdg.programming6.project.restaurantmanagement.port.out.LoadRestaurantPort;
 import be.kdg.programming6.project.restaurantmanagement.port.out.SaveRestaurantPort;
@@ -48,6 +49,13 @@ public class RestaurantJpaAdapter implements SaveRestaurantPort, LoadRestaurantP
     public List<Restaurant> loadAll() {
         List<RestaurantJpaEntity> entities = restaurantRepo.findAll();
         return entities.stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public Optional<Restaurant> loadByOwnerId(OwnerId ownerId) {
+        RestaurantJpaEntity entity = restaurantRepo.findByOwner((ownerId.uuid())).get();
+        Restaurant restaurant = mapper.toDomain(entity);
+        return Optional.of(restaurant);
     }
 
     @Override
