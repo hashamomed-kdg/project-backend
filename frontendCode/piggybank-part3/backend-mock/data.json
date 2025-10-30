@@ -1,0 +1,69 @@
+{
+  "piggybanks": [
+    {
+      "id": "1",
+      "amount": 100,
+      "background": "unicorn",
+      "owner": {
+        "id": "1",
+        "name": "Linda"
+      }
+    },
+    {
+      "id": "2",
+      "amount": 200,
+      "background": "race",
+      "owner": {
+        "id": "2",
+        "name": "Said"
+      }
+    },
+    {
+      "id": "4",
+      "amount": 300,
+      "background": "classic",
+      "owner": {
+        "id": "4",
+        "name": "Bobby"
+      }
+    }
+  ],
+  "donations": [
+    {
+      "amount": 50,
+      "shortMessage": "Happy Birthday!",
+      "longMessage": "Your a good girl, I love you. Hope you have a wonderful day filled with joy and surprises!",
+      "timestamp": "2025-09-12T13:57:24.662Z",
+      "piggybankId": "1",
+      "sponsor": {
+        "id": "6",
+        "name": "Grandma"
+      },
+      "id": 1
+    },
+    {
+      "amount": 70,
+      "shortMessage": "Happy New Year!",
+      "longMessage": "See you at the party tonight!",
+      "timestamp": "2024-12-31T13:57:24.662Z",
+      "piggybankId": "1",
+      "sponsor": {
+        "id": "7",
+        "name": "Grandpa"
+      },
+      "id": 2
+    },
+    {
+      "amount": 10,
+      "shortMessage": "This is for you ❤️",
+      "longMessage": "",
+      "piggybankId": "4",
+      "sponsor": {
+        "id": "6",
+        "name": "Grandma"
+      },
+      "timestamp": "2025-10-04T08:27:02.867Z",
+      "id": 3
+    }
+  ]
+}

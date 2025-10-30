@@ -1,0 +1,2 @@
+export const BACKGROUNDS = ["classic", "theo", "race", "unicorn"] as const
+export type Background = typeof BACKGROUNDS[number] // a bit unique TS syntax, this means Background can be one of the strings in BACKGROUNDS

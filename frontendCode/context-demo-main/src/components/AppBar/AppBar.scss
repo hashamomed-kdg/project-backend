@@ -1,0 +1,26 @@
+.app-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: #fff;
+}
+
+.info-panel {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+.user-panel {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}

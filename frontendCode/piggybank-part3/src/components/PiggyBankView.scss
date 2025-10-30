@@ -1,0 +1,87 @@
+.piggy-bank {
+  aspect-ratio: 1.4;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.bg-classic {
+    background-image: url('../assets/img/piggy.png');
+  }
+
+  &.bg-theo {
+    background-image: url('../assets/img/theo.png');
+  }
+
+  &.bg-race {
+    background-image: url('../assets/img/race.png');
+  }
+
+  &.bg-unicorn {
+    background-image: url('../assets/img/unicorn.png');
+  }
+
+  .bg-controls {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+
+    .bg-btn {
+      width: 1.6rem;
+      height: 2rem;
+      border-radius: 0.25rem;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      user-select: none;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+    }
+  }
+
+  .fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #111;
+    backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    line-height: 1;
+
+    height: 8rem;
+    width: 8rem;
+    padding: 1rem;
+
+    .owner {
+      font-family: "Dawning of a New Day", cursive;
+      font-weight: bold;
+      font-size: 1.5rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .balance {
+      font-weight: bold;
+      font-size: 3rem;
+    }
+  }
+
+  &.large {
+    width: 30rem;
+  }
+
+  &.small {
+    width: 18rem;
+  }
+}

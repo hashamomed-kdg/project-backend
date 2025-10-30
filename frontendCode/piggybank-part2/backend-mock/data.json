@@ -1,0 +1,31 @@
+{
+  "piggybanks": [
+    {
+      "id": "1",
+      "amount": 100,
+      "background": "theo",
+      "owner": {
+        "id": "1",
+        "name": "Linda"
+      }
+    },
+    {
+      "id": "2",
+      "amount": 200,
+      "background": "theo",
+      "owner": {
+        "id": "2",
+        "name": "Said"
+      }
+    },
+    {
+      "id": "4",
+      "amount": 300,
+      "background": "classic",
+      "owner": {
+        "id": "4",
+        "name": "Bobby"
+      }
+    }
+  ]
+}
