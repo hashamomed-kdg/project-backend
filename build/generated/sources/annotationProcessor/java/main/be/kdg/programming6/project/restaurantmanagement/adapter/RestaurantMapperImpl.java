@@ -1,0 +1,174 @@
+package be.kdg.programming6.project.restaurantmanagement.adapter;
+
+import be.kdg.programming6.project.restaurantmanagement.adapter.in.request.CreateRestaurantRequest;
+import be.kdg.programming6.project.restaurantmanagement.adapter.in.request.dtos.AddressDto;
+import be.kdg.programming6.project.restaurantmanagement.adapter.in.request.dtos.OpeningHoursDto;
+import be.kdg.programming6.project.restaurantmanagement.adapter.in.response.RestaurantDto;
+import be.kdg.programming6.project.restaurantmanagement.adapter.out.jpa.entity.AddressEmbeddable;
+import be.kdg.programming6.project.restaurantmanagement.adapter.out.jpa.entity.RestaurantJpaEntity;
+import be.kdg.programming6.project.restaurantmanagement.domain.Restaurant;
+import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.Address;
+import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.CuisineType;
+import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.EmailAddress;
+import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.OpeningHours;
+import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.OwnerId;
+import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.PictureUrl;
+import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.RestaurantId;
+import be.kdg.programming6.project.restaurantmanagement.domain.valueobject.RestaurantStatus;
+import be.kdg.programming6.project.restaurantmanagement.port.in.CreateRestaurantCommand;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2025-10-30T16:25:44+0100",
+    comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.3.jar, environment: Java 21.0.1 (Oracle Corporation)"
+)
+@Component
+public class RestaurantMapperImpl implements RestaurantMapper {
+
+    @Override
+    public CreateRestaurantCommand toCommand(CreateRestaurantRequest request) {
+        if ( request == null ) {
+            return null;
+        }
+
+        OwnerId owner = null;
+        String restaurantName = null;
+        EmailAddress emailAddress = null;
+        CuisineType cuisineType = null;
+        List<PictureUrl> pictures = null;
+        Address address = null;
+        OpeningHours openingHours = null;
+        double defaultPreparationTime = 0.0d;
+
+        owner = uuidToOwnerId( request.owner() );
+        restaurantName = request.name();
+        emailAddress = stringToEmailAddress( request.email() );
+        cuisineType = stringToCuisineType( request.cuisineType() );
+        pictures = stringsToPictureUrls( request.pictures() );
+        address = addressDtoToAddress( request.address() );
+        openingHours = openingHoursDtoToOpeningHours( request.openingHours() );
+        defaultPreparationTime = request.defaultPreparationTime();
+
+        CreateRestaurantCommand createRestaurantCommand = new CreateRestaurantCommand( owner, restaurantName, address, emailAddress, pictures, cuisineType, defaultPreparationTime, openingHours );
+
+        return createRestaurantCommand;
+    }
+
+    @Override
+    public RestaurantDto toDto(Restaurant restaurant) {
+        if ( restaurant == null ) {
+            return null;
+        }
+
+        UUID restaurantId = null;
+        UUID owner = null;
+        String name = null;
+        String email = null;
+        String cuisineType = null;
+        List<String> pictures = null;
+        AddressDto address = null;
+        OpeningHoursDto openingHours = null;
+        String manualStatus = null;
+        double defaultPreparationTime = 0.0d;
+
+        restaurantId = restaurantIdToUuid( restaurant.getRestaurantId() );
+        owner = ownerIdToUuid( restaurant.getOwner() );
+        name = restaurant.getRestaurantName();
+        email = emailAddressToString( restaurant.getEmailAddress() );
+        cuisineType = cuisineTypeToString( restaurant.getCuisineType() );
+        pictures = pictureUrlsToStrings( restaurant.getPictures() );
+        address = addressToAddressDto( restaurant.getAddress() );
+        openingHours = openingHoursToOpeningHoursDto( restaurant.getOpeningHours() );
+        manualStatus = restaurantStatusToManualStatus( restaurant.getManualStatus() );
+        defaultPreparationTime = restaurant.getDefaultPreparationTime();
+
+        RestaurantDto restaurantDto = new RestaurantDto( restaurantId, owner, name, address, email, cuisineType, pictures, defaultPreparationTime, openingHours, manualStatus );
+
+        return restaurantDto;
+    }
+
+    @Override
+    public RestaurantJpaEntity toEntity(Restaurant restaurant) {
+        if ( restaurant == null ) {
+            return null;
+        }
+
+        UUID uuid = null;
+        UUID owner = null;
+        String emailAddress = null;
+        CuisineType cuisineType = null;
+        AddressEmbeddable address = null;
+        String restaurantName = null;
+        List<PictureUrl> pictures = null;
+        double defaultPreparationTime = 0.0d;
+        OpeningHours openingHours = null;
+
+        uuid = restaurantIdToUuid( restaurant.getRestaurantId() );
+        owner = ownerIdToUuid( restaurant.getOwner() );
+        emailAddress = emailAddressToString( restaurant.getEmailAddress() );
+        if ( restaurant.getCuisineType() != null ) {
+            cuisineType = Enum.valueOf( CuisineType.class, cuisineTypeToString( restaurant.getCuisineType() ) );
+        }
+        address = addressToAddressEmbeddable( restaurant.getAddress() );
+        restaurantName = restaurant.getRestaurantName();
+        List<PictureUrl> list1 = restaurant.getPictures();
+        if ( list1 != null ) {
+            pictures = new ArrayList<PictureUrl>( list1 );
+        }
+        defaultPreparationTime = restaurant.getDefaultPreparationTime();
+        openingHours = restaurant.getOpeningHours();
+
+        RestaurantJpaEntity restaurantJpaEntity = new RestaurantJpaEntity( uuid, owner, restaurantName, address, emailAddress, pictures, cuisineType, defaultPreparationTime, openingHours );
+
+        restaurantJpaEntity.setDishes( menuToDishJpaList( restaurant.getMenu() ) );
+        if ( restaurant.getManualStatus() != null ) {
+            restaurantJpaEntity.setManualStatus( Enum.valueOf( RestaurantStatus.class, restaurantStatusToManualStatus( restaurant.getManualStatus() ) ) );
+        }
+
+        return restaurantJpaEntity;
+    }
+
+    @Override
+    public Restaurant toDomain(RestaurantJpaEntity entity) {
+        if ( entity == null ) {
+            return null;
+        }
+
+        RestaurantId restaurantId = null;
+        OwnerId owner = null;
+        EmailAddress emailAddress = null;
+        Address address = null;
+        String restaurantName = null;
+        List<PictureUrl> pictures = null;
+        CuisineType cuisineType = null;
+        double defaultPreparationTime = 0.0d;
+        OpeningHours openingHours = null;
+
+        restaurantId = uuidToRestaurantId( entity.getUuid() );
+        owner = uuidToOwnerId( entity.getOwner() );
+        emailAddress = stringToEmailAddress( entity.getEmailAddress() );
+        address = addressEmbeddableToAddress( entity.getAddress() );
+        restaurantName = entity.getRestaurantName();
+        List<PictureUrl> list = entity.getPictures();
+        if ( list != null ) {
+            pictures = new ArrayList<PictureUrl>( list );
+        }
+        cuisineType = entity.getCuisineType();
+        defaultPreparationTime = entity.getDefaultPreparationTime();
+        openingHours = entity.getOpeningHours();
+
+        Restaurant restaurant = new Restaurant( restaurantId, owner, restaurantName, address, emailAddress, pictures, cuisineType, defaultPreparationTime, openingHours );
+
+        restaurant.setMenu( dishJpaListToMenu( entity.getDishes() ) );
+        if ( entity.getManualStatus() != null ) {
+            restaurant.setManualStatus( manualStatusToRestaurantStatus( entity.getManualStatus().name() ) );
+        }
+
+        return restaurant;
+    }
+}

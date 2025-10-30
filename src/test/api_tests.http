@@ -1,0 +1,191 @@
+# creating a restaurant
+POST http://localhost:8080/api/restaurants
+Accept: application/json
+Content-Type: application/json
+
+{
+  "owner": "550e8400-e29b-41d4-a716-446655440000",
+  "name": "La Bella Napoli",
+  "address": {
+    "street": "Via Roma",
+    "number": "42",
+    "postalCode": "80100",
+    "city": "Napoli",
+    "country": "Italy"
+  },
+  "email": "contact@labellanapoli.it",
+  "cuisineType": "ITALIAN",
+  "pictures": [
+    "https://cdn.example.com/restaurants/napoli/front.jpg",
+    "https://cdn.example.com/restaurants/napoli/diningroom.jpg"
+  ],
+  "defaultPreparationTime": 45.0,
+  "openingHours": {
+    "MONDAY": [
+      { "open": "09:00", "close": "12:00" },
+      { "open": "13:00", "close": "17:00" }
+    ],
+    "WEDNESDAY": [
+      { "open": "09:00", "close": "12:00" },
+      { "open": "13:00", "close": "23:55" }
+    ],
+    "SATURDAY": [
+      { "open": "10:00", "close": "14:00" }
+    ]
+  }
+}
+
+###
+# creating a dish
+POST http://localhost:8080/api/restaurants/c336b190-5739-4e94-a9ab-1f298e14a43e/menu/createDish
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Vegan Steak",
+  "dishType": "STARTER",
+  "foodTags": ["VEGAN"],
+  "description": "new food",
+  "price": 30,
+  "pictureUrl": "newFood.com",
+  "state": "UNPUBLISHED"
+}
+
+###
+# editing a dish - 'state' will be saved as 'DRAFT'
+PATCH http://localhost:8080/api/restaurants/c336b190-5739-4e94-a9ab-1f298e14a43e/menu/bef1ba67-1927-42fa-acaa-e6e694f211dd/editDish
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Test1",
+  "dishType": "STARTER",
+  "foodTags": ["HALAL"],
+  "description": "edited again x3",
+  "price": 90,
+  "pictureUrl": "edited.com"
+}
+
+###
+# Changing the state of a dish to either 'PUBLISHED', 'UNPUBLISHED', 'OUT_OF_STOCK'
+PATCH http://localhost:8080/api/restaurants/53c1b33e-e068-4eab-9a50-6cf5b8551b84/menu/3d749037-84a4-4b49-b501-22c9a7eff9e5/changeStateDish
+Accept: application/json
+Content-Type: application/json
+
+{
+  "state": "PUBLISHED"
+}
+
+###
+# applying all drafts to PUBLISHED
+PATCH http://localhost:8080/api/restaurants/53c1b33e-e068-4eab-9a50-6cf5b8551b84/menu/applyAllDrafts
+Accept: application/json
+
+###
+# Schedule selected drafts to publish
+PATCH http://localhost:8080/api/restaurants/c336b190-5739-4e94-a9ab-1f298e14a43e/menu/scheduleDrafts
+Accept: application/json
+Content-Type: application/json
+
+{
+  "dishIds": ["de8bc86b-b25e-4d77-94aa-01778e9801cf"],
+  "publishTime": "2025-10-29T22:05:45"
+}
+
+###
+# change restaurant opening hours (just weekend in this example)
+PATCH http://localhost:8080/api/restaurants/c336b190-5739-4e94-a9ab-1f298e14a43e/changeOpeningHours
+Accept: application/json
+Content-Type: application/json
+
+{
+  "openingHours": {
+    "SATURDAY": [
+      { "open": "08:00", "close": "12:00" },
+      { "open": "13:00", "close": "18:00" }
+    ],
+    "SUNDAY": [
+      { "open": "09:00", "close": "12:00" },
+      { "open": "13:00", "close": "17:00" }
+    ]
+  }
+}
+
+###
+# change restaurant manual staus to 'OPEN' or 'CLOSED'
+PATCH http://localhost:8080/api/restaurants/c336b190-5739-4e94-a9ab-1f298e14a43e/changeRestaurantStatus
+Accept: application/json
+Content-Type: application/json
+
+{
+  "manualStatus": "OPEN"
+}
+
+###
+# decide to either accept or reject a new order
+PATCH http://localhost:8080/api/restaurants/orders/decide
+Accept: application/json
+Content-Type: application/json
+
+{
+  "decisionRequest": {
+    "orderId": "de8bc86b-ffff-4d77-94aa-01778e9801cf",
+    "restaurantId": "550e8400-e29b-41d4-a716-446655440000",
+    "deliveryAddress": {
+      "street": "Main Street",
+      "number": "123",
+      "postalCode": "12345",
+      "city": "Sample City",
+      "country": "Sample Country"
+    },
+    "decision": "ACCEPT",
+    "reason": null
+  }
+}
+
+###
+# Mark an order as ready
+
+###
+
+# add a item in basket
+PATCH http://localhost:8080/api/orders/add
+Accept: application/json
+Content-Type: application/json
+
+{
+  "basketId": "de8bc86b-eeee-ffff-94aa-01778e9801cf",
+  "dishId": "880e8400-e29b-41d4-a716-446655440010",
+  "restaurantId": "550e8400-e29b-41d4-a716-446655440000",
+  "name": "Grilled Salmon",
+  "price": 24.99,
+  "quantity": 1
+}
+
+###
+PATCH http://localhost:8080/api/orders/{{basketId}}/remove}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "dishId": "de8bc86b-b25e-4d77-94aa-01778e9801cf"
+}
+
+###
+# checkout the basket and create an order (provide customer details)
+POST http://localhost:8080/api/orders/{{basketId}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "",
+  "street": "",
+  "number": "",
+  "postalCode": "",
+  "city": "",
+  "country": ""
+}
+
+###
+
